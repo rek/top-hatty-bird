@@ -49,7 +49,7 @@ module.exports = function (grunt) {
                 files: [
                     'www/*.html',
                     '{.tmp,www}/css/*.css',
-                    '{.tmp,app}/js/*.js',
+                    '{.tmp,www}/js/*.js',
                     'www/img/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ],
                 tasks: ['livereload'] // , 'jshint'
