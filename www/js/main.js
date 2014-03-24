@@ -47,7 +47,7 @@ require(libsToLoad, function(
 
             this.bird.anchor.setTo(-0.2, 0.5);
 
-            this.game.physics.arcade.gravity.y = 100;
+            this.game.physics.arcade.gravity.y = 400;
             this.game.physics.enable(this.bird, Phaser.Physics.ARCADE);
 
             // Add gravity to the bird to make it fall
@@ -65,7 +65,7 @@ require(libsToLoad, function(
 
             // Create a group of 20 pipes
             this.pipes = game.add.group();
-            this.pipes.createMultiple(20, 'pipe');
+            this.pipes.createMultiple(30, 'pipe');
 
             // Timer that calls 'add_row_of_pipes' ever 1.5 seconds
             this.timer = this.game.time.events.loop(1500, this.add_row_of_pipes, this);
