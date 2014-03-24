@@ -34,7 +34,8 @@
     "sinon"                : "^1.9.0"
   }
 }
-// Generated on 2014-03-16 using generator-marionette-modules 0.1.0
+
+// Generated on 2014-03-24
 'use strict';
 var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
 var mountFolder = function (connect, dir) {
