@@ -1,18 +1,18 @@
 var mobile_found = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-if (mobile_found) {
-    console.log('MOBILE');
-} else {
-    console.log('NOT MOBILE');
-}
-
 var libsToLoad = [
     "jquery",
     'phaser'
 ];
 
-// add cordova when using a mobile device
-if(mobile_found) libsToLoad.push("../cordova");
+if (mobile_found) {
+    console.log('MOBILE');
+    // add cordova when using a mobile device
+    libsToLoad.push("../cordova");
+} else {
+    console.log('NOT MOBILE');
+    libsToLoad.push("//localhost:35729/livereload.js");
+}
 
 require(libsToLoad, function(
     $
@@ -139,6 +139,7 @@ require(libsToLoad, function(
             // Add velocity to the pipe to make it move left
             pipe.body.velocity.x -= 200;
 
+//make him bounce
 // pipe.body.collideWorldBounds = true;
 // pipe.body.bounce.y = 0.8;
 
