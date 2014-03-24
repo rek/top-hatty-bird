@@ -10,29 +10,15 @@
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>Top Hatty Bird</title>
 
-    <style>
-      #game_div, p {
-        width: 400px;
-        margin: auto;
-        margin-top: 20px;
-      }
-    </style>
-
-    <script type="text/javascript" src="js/phaser.min.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
+    <script data-main="js/config" src="js/bower_components/requirejs/require.js"></script>
   </head>
 
   <body>
 
-    <p>TOPHATTYBIRD: Tap to jump</p>
+    <p>TOPHATTYBIRD: Tap to fly</p>
 
     <div id="game_div"> </div>
-
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript">
-      app.initialize();
-    </script>
-
+    <script src="//localhost:35729/livereload.js"></script>
   </body>
 
 </html>
