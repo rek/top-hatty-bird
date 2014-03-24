@@ -1,0 +1,10 @@
+node_modules
+temp
+dist
+build
+.sass-cache
+www/js/bower_components
+platforms/android/assets/www
+.tmp/
+*.sublime-*
+*compiled.js
