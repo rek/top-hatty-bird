@@ -14,17 +14,21 @@ var mountFolder = function (connect, dir) {
 module.exports = function (grunt) {
     var banner = '/*\nTOPHATTYBIRD . init: 24 March 2014';
 
-        // load all grunt tasks
-    require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+    // Load grunt tasks automatically
+    require('load-grunt-tasks')(grunt);
 
-    // configurable paths
-    var yeomanConfig = {
-        app: 'app',
-        dist: 'build'
-    };
+    // Time how long tasks take. Can help when optimizing build times
+    require('time-grunt')(grunt);
+
+    // load all grunt tasks
+    // require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     grunt.initConfig({
-        yeoman: yeomanConfig,
+        config: {
+            // Configurable paths
+            app: 'www',
+            dist: 'www'
+        },
         watch: {
             options: {
                 nospawn: true,
@@ -45,51 +49,53 @@ module.exports = function (grunt) {
                 // ],
                 // tasks: 'dustjs'
             // },
+            gruntfile: {
+                files: ['Gruntfile.js']
+            },
             livereload: {
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                },
                 files: [
-                    'www/*.html',
-                    '{.tmp,www}/css/*.css',
-                    '{.tmp,www}/js/*.js',
-                    'www/img/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                    '<%= config.app %>/*.html',
+                    '{.tmp,<%= config.app %>}/css/*.css',
+                    '<%= config.app %>/js/*.js',
+                    '<%= config.app %>/img/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ],
-                tasks: ['livereload'] // , 'jshint'
+                // tasks: ['livereload'] // , 'jshint'
             }
         },
         connect: {
             options: {
-                port: 8085,
-                // change this to '0.0.0.0' to access the server from outside
+                port: 9000,
+                livereload: 35729,
+                // Change this to '0.0.0.0' to access the server from outside
                 hostname: 'localhost'
-                // hostname: '0.0.0.0'
             },
             livereload: {
                 options: {
-                    middleware: function (connect) {
-                        return [
-                            lrSnippet,
-                            mountFolder(connect, '.tmp'),
-                            mountFolder(connect, 'app')
-                        ];
-                    }
+                    open: true,
+                    base: [
+                        '.tmp',
+                        '<%= config.app %>'
+                    ]
                 }
             },
             test: {
                 options: {
-                    middleware: function (connect) {
-                        return [
-                            mountFolder(connect, '.tmp'),
-                            mountFolder(connect, 'test')
-                        ];
-                    }
+                    port: 9001,
+                    base: [
+                        '.tmp',
+                        'test',
+                        '<%= config.app %>'
+                    ]
                 }
             },
             dist: {
                 options: {
-                    middleware: function (connect) {
-                        return [
-                            mountFolder(connect, 'dist')
-                        ];
-                    }
+                    open: true,
+                    base: '<%= config.dist %>',
+                    livereload: false
                 }
             }
         },
@@ -265,11 +271,21 @@ module.exports = function (grunt) {
         // },
         htmlmin: {
             dist: {
+                options: {
+                    collapseBooleanAttributes: true,
+                    collapseWhitespace: true,
+                    removeAttributeQuotes: true,
+                    removeCommentsFromCDATA: true,
+                    removeEmptyAttributes: true,
+                    removeOptionalTags: true,
+                    removeRedundantAttributes: true,
+                    useShortDoctype: true
+                },
                 files: [{
                     expand: true,
-                    cwd: 'app',
-                    src: '*.html',
-                    dest: 'build'
+                    cwd: '<%= config.app %>',
+                    src: '{,*/}*.html',
+                    dest: '<%= config.dist %>'
                 }]
             }
         },
@@ -329,19 +345,23 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('server', function (target) {
+    grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
-            return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+            return grunt.task.run(['build', 'connect:dist:keepalive']);
         }
 
         grunt.task.run([
             'clean:server',
             'concurrent:server',
-            // 'livereload-start',
+            'autoprefixer',
             'connect:livereload',
-            'open',
             'watch'
         ]);
+    });
+
+    grunt.registerTask('server', function (target) {
+        grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
+        grunt.task.run([target ? ('serve:' + target) : 'serve']);
     });
 
     grunt.registerTask('w', [

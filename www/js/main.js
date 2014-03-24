@@ -43,10 +43,13 @@ require(libsToLoad, function(
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
             // Display the bird on the screen
-            this.bird = this.game.add.sprite(100, 245, 'bird');
+            // this.bird = this.game.add.sprite(100, 245, 'bird');
+            this.bird = this.game.add.sprite(50, 150, 'bird');
 
+            // set rotation.
             this.bird.anchor.setTo(-0.2, 0.5);
 
+            // add generic gravity
             this.game.physics.arcade.gravity.y = 400;
             this.game.physics.enable(this.bird, Phaser.Physics.ARCADE);
 
@@ -59,16 +62,19 @@ require(libsToLoad, function(
 
             var self = this;
             this.game.input.onTap.add(function(e){
-                console.log('tapped');
+                // console.log('tapped');
                 self.jump();
             }, this);
 
             // Create a group of 20 pipes
             this.pipes = game.add.group();
-            this.pipes.createMultiple(30, 'pipe');
+            // get a body, so we can change the gravity
+            this.pipes.enableBody = true;
+            // make 20
+            this.pipes.createMultiple(20, 'pipe');
 
             // Timer that calls 'add_row_of_pipes' ever 1.5 seconds
-            this.timer = this.game.time.events.loop(1500, this.add_row_of_pipes, this);
+            this.timer = this.game.time.events.loop(Phaser.Timer.SECOND * 1.5, this.add_row_of_pipes, this);
 
             // Add a score label on the top left of the screen
             this.score = 0;
@@ -117,14 +123,19 @@ require(libsToLoad, function(
 
         // Add a pipe on the screen
         add_one_pipe: function(x, y) {
+            console.log('adding one pipe')
             // Get the first dead pipe of our group
             var pipe = this.pipes.getFirstDead();
 
             // Set the new position of the pipe
             pipe.reset(x, y);
+            pipe.body.allowGravity = false;
 
-             // Add velocity to the pipe to make it move left
-            pipe.velocity = new Phaser.Point(-160);
+            // Add velocity to the pipe to make it move left
+            pipe.body.velocity.x -= 200;
+
+// pipe.body.collideWorldBounds = true;
+// pipe.body.bounce.y = 0.8;
 
             // Kill the pipe when it's no longer visible
             pipe.outOfBoundsKill = true;
@@ -133,51 +144,25 @@ require(libsToLoad, function(
         // Add a row of 6 pipes with a hole somewhere in the middle
         add_row_of_pipes: function() {
             var hole = Math.floor(Math.random()*5)+1;
+            var hole_range = hole + 1;
+            console.log('adding pipes group, hole: ' + hole);
 
-            for (var i = 0; i < 10; i++)
-                if (i != hole && i != hole +1)
+            for (var i = 0; i < 8; i++) {
+
+                if (i != hole && i != hole_range)
                     this.add_one_pipe(400, i*60+10);
+            }
 
             this.score += 1;
             this.label_score.content = this.score;
+            console.log('incrementing score: ' + this.score);
         },
-    };
 
-
-    var app = {
-        // Application Constructor
-        initialize: function() {
-            // console.log('Init');
-            this.bindEvents();
-        },
-        // Bind Event Listeners
-        //
-        // Bind any events that are required on startup. Common events are:
-        // 'load', 'deviceready', 'offline', and 'online'.
-        bindEvents: function() {
-            // $(document).on("mobileinit", function() {
-            $(function() { // on jQuery mobile ready
-            // if (mobile_found) {
-                // document.addEventListener('deviceready', this.onDeviceReady, false);
-            // } else {
-                app.onDeviceReady();
-            });
-
-        },
-        // deviceready Event Handler
-        //
-        // The scope of 'this' is the event. In order to call the 'receivedEvent'
-        // function, we must explicity call 'app.receivedEvent(...);'
-        onDeviceReady: function() {
-            // app.receivedEvent('deviceready');
-            console.log('device ready..')
-            // Add and start the 'main' state to start the game
-            game.state.add('main', game_state.main);
-            game.state.start('main');
+        render: function() {
+            game.debug.text("Score: " + this.score, 32, 32);
         }
     };
 
-    // app.initialize();
     $(function() {
         game.state.add('main', game_state.main);
         game.state.start('main');
