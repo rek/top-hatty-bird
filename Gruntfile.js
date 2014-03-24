@@ -57,10 +57,10 @@ module.exports = function (grunt) {
         },
         connect: {
             options: {
-                port: 1212,
+                port: 8085,
                 // change this to '0.0.0.0' to access the server from outside
-                // hostname: 'localhost'
-                hostname: '0.0.0.0'
+                hostname: 'localhost'
+                // hostname: '0.0.0.0'
             },
             livereload: {
                 options: {
@@ -290,7 +290,7 @@ module.exports = function (grunt) {
                     reporter: 'Spec',
                     run: false,
                     timeout: 10000,
-                    urls: ['http://localhost:8888/index.html']
+                    urls: ['http://localhost:35729/index.html']
                 }
             }
         },
@@ -337,7 +337,7 @@ module.exports = function (grunt) {
         grunt.task.run([
             'clean:server',
             'concurrent:server',
-            'livereload-start',
+            // 'livereload-start',
             'connect:livereload',
             'open',
             'watch'
