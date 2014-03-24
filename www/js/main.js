@@ -45,6 +45,8 @@ require(libsToLoad, function(
             // Display the bird on the screen
             // this.bird = this.game.add.sprite(100, 245, 'bird');
             this.bird = this.game.add.sprite(50, 150, 'bird');
+            this.bird.scale.x = 0.5;
+            this.bird.scale.y = 0.5;
 
             // set rotation.
             this.bird.anchor.setTo(-0.2, 0.5);
@@ -72,6 +74,9 @@ require(libsToLoad, function(
             this.pipes.enableBody = true;
             // make 20
             this.pipes.createMultiple(20, 'pipe');
+
+            this.pipes.scale.x = 0.9;
+            this.pipes.scale.y = 0.9;
 
             // Timer that calls 'add_row_of_pipes' ever 1.5 seconds
             this.timer = this.game.time.events.loop(Phaser.Timer.SECOND * 1.5, this.add_row_of_pipes, this);
@@ -137,6 +142,8 @@ require(libsToLoad, function(
 // pipe.body.collideWorldBounds = true;
 // pipe.body.bounce.y = 0.8;
 
+            pipe.checkWorldBounds = true;
+
             // Kill the pipe when it's no longer visible
             pipe.outOfBoundsKill = true;
         },
@@ -145,21 +152,20 @@ require(libsToLoad, function(
         add_row_of_pipes: function() {
             var hole = Math.floor(Math.random()*5)+1;
             var hole_range = hole + 1;
+            var hole_range2 = hole + 2;
             console.log('adding pipes group, hole: ' + hole);
 
-            for (var i = 0; i < 8; i++) {
+            for (var i = 0; i < 7; i++) {
 
-                if (i != hole && i != hole_range)
+                if (i != hole && i != hole_range && i != hole_range2)
                     this.add_one_pipe(400, i*60+10);
             }
 
-            this.score += 1;
-            this.label_score.content = this.score;
-            console.log('incrementing score: ' + this.score);
+            this.label_score.setText('' + ++this.score);
         },
 
         render: function() {
-            game.debug.text("Score: " + this.score, 32, 32);
+            // game.debug.text("Score: " + this.score, 32, 32);
         }
     };
 
