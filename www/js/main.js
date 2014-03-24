@@ -65,7 +65,7 @@ require(libsToLoad, function(
             this.game.stage.backgroundColor = '#71c5cf';
 
             // Load the bird sprite
-            this.game.load.image('bird', 'img/bird.png');
+            this.game.load.image('bird', 'img/bird.svg');
 
             // Load the pipe sprite
             this.game.load.image('pipe', 'img/pipe.png');
