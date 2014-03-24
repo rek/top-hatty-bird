@@ -8,3 +8,6 @@ platforms/android/assets/www
 .tmp/
 *.sublime-*
 *compiled.js
+platforms/*/ant-*
+platforms/*/*/ant-*
+platforms/android/src

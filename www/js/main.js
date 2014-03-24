@@ -1,15 +1,14 @@
 var mobile_found = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-// if (mobile_found) {
-//     console.log('MOBILE');
-//     require('../cordova');
-// } else {
-//     console.log('NOT MOBILE');
 
-// }
+if (mobile_found) {
+    console.log('MOBILE');
+} else {
+    console.log('NOT MOBILE');
+}
 
 var libsToLoad = [
     // "jquery",
-    'phaser.min'
+    'phaser'
 ];
 
 // add cordova when using a mobile device
@@ -46,7 +45,7 @@ var app = {
 
 require(libsToLoad, function(
     //$,
-    Phaser
+    // Phaser
 ){
     // Initialize Phaser, and creates a 400x490px game
     var game = new Phaser.Game(400, 490, Phaser.AUTO, 'game_div');
