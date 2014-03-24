@@ -7,53 +7,20 @@ if (mobile_found) {
 }
 
 var libsToLoad = [
-    // "jquery",
+    "jquery",
     'phaser'
 ];
 
 // add cordova when using a mobile device
 if(mobile_found) libsToLoad.push("../cordova");
 
-var app = {
-    // Application Constructor
-    initialize: function() {
-        // console.log('Init');
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-        // $(document).on("mobileinit", function() {
-        // console.log('Binding events');
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        // app.receivedEvent('deviceready');
-        // console.log('device ready..')
-        // Add and start the 'main' state to start the game
-        game.state.add('main', game_state.main);
-        game.state.start('main');
-    }
-};
-
-
 require(libsToLoad, function(
-    //$,
-    // Phaser
+    $
+    // ,Phaser
 ){
     // Initialize Phaser, and creates a 400x490px game
     var game = new Phaser.Game(400, 490, Phaser.AUTO, 'game_div');
     var game_state = {};
-    app.initialize();
-
-
-
 
     // Creates a new 'main' state that will contain the game
     game_state.main = function() { };
@@ -73,13 +40,18 @@ require(libsToLoad, function(
 
         // Fuction called after 'preload' to setup the game
         create: function() {
+            this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
             // Display the bird on the screen
             this.bird = this.game.add.sprite(100, 245, 'bird');
 
             this.bird.anchor.setTo(-0.2, 0.5);
 
+            this.game.physics.arcade.gravity.y = 100;
+            this.game.physics.enable(this.bird, Phaser.Physics.ARCADE);
+
             // Add gravity to the bird to make it fall
-            this.bird.body.gravity.y = 1200;
+            // this.bird.gravity = new Phaser.Point(0, 1200);
 
             // Call the 'jump' function when the spacekey is hit
             // var space_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -114,13 +86,15 @@ require(libsToLoad, function(
                 this.bird.angle += 1;
 
             // If the bird overlap any pipes, call 'restart_game'
-            this.game.physics.overlap(this.bird, this.pipes, this.restart_game, null, this);
+            // this.game.physics.overlap(this.bird, this.pipes, this.restart_game, null, this);
+            this.game.physics.arcade.collide(this.bird, this.pipes, this.restart_game, null, this);
+
         },
 
         // Make the bird jump
         jump: function() {
             // Add a vertical velocity to the bird
-            this.bird.body.velocity.y = -350;
+            this.bird.body.velocity.y = -200;
 
             // create an animation on the bird
             var animation = this.game.add.tween(this.bird);
@@ -150,7 +124,7 @@ require(libsToLoad, function(
             pipe.reset(x, y);
 
              // Add velocity to the pipe to make it move left
-            pipe.body.velocity.x = -160;
+            pipe.velocity = new Phaser.Point(-160);
 
             // Kill the pipe when it's no longer visible
             pipe.outOfBoundsKill = true;
@@ -169,4 +143,43 @@ require(libsToLoad, function(
         },
     };
 
+
+    var app = {
+        // Application Constructor
+        initialize: function() {
+            // console.log('Init');
+            this.bindEvents();
+        },
+        // Bind Event Listeners
+        //
+        // Bind any events that are required on startup. Common events are:
+        // 'load', 'deviceready', 'offline', and 'online'.
+        bindEvents: function() {
+            // $(document).on("mobileinit", function() {
+            $(function() { // on jQuery mobile ready
+            // if (mobile_found) {
+                // document.addEventListener('deviceready', this.onDeviceReady, false);
+            // } else {
+                app.onDeviceReady();
+            });
+
+        },
+        // deviceready Event Handler
+        //
+        // The scope of 'this' is the event. In order to call the 'receivedEvent'
+        // function, we must explicity call 'app.receivedEvent(...);'
+        onDeviceReady: function() {
+            // app.receivedEvent('deviceready');
+            console.log('device ready..')
+            // Add and start the 'main' state to start the game
+            game.state.add('main', game_state.main);
+            game.state.start('main');
+        }
+    };
+
+    // app.initialize();
+    $(function() {
+        game.state.add('main', game_state.main);
+        game.state.start('main');
+    });
 });
