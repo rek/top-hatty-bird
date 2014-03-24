@@ -82,7 +82,7 @@ require(libsToLoad, function(
             if (this.bird.inWorld == false)
                 this.restart_game();
 
-            if (this.bird.angle < 20)
+            if (this.bird.angle < 80)
                 this.bird.angle += 1;
 
             // If the bird overlap any pipes, call 'restart_game'
