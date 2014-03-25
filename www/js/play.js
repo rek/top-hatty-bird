@@ -9,6 +9,8 @@ var play_state = {
     create: function() {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+        app.score = 0;
+
         // Display the bird on the screen
         // this.bird = this.game.add.sprite(100, 245, 'bird');
         this.bird = this.game.add.sprite(50, 150, 'bird');
@@ -42,14 +44,13 @@ var play_state = {
         // make 20
         this.pipes.createMultiple(20, 'pipe');
 
-        // this.pipes.scale.x = 0.8;
-        this.pipes.scale.y = 1.5;
+        this.pipes.scale.x = 0.8;
+        // this.pipes.scale.y = 1.;
 
         // Timer that calls 'add_row_of_pipes' ever 1.5 seconds
         this.timer = this.game.time.events.loop(Phaser.Timer.SECOND * 2.5, this.add_row_of_pipes, this);
 
         // Add a score label on the top left of the screen
-        this.score = 0;
         var style = { font: '30px Arial', fill: '#ffffff' };
         this.label_score = this.game.add.text(20, 20, '0', style);
     },
@@ -65,12 +66,15 @@ var play_state = {
 
         // If the bird overlap any pipes, call 'restart_game'
         // this.game.physics.overlap(this.bird, this.pipes, this.restart_game, null, this);
-        this.game.physics.arcade.collide(this.bird, this.pipes, this.restart_game, null, this);
+        this.game.physics.arcade.collide(this.bird, this.pipes, this.hit_pipe, null, this);
 
     },
 
     // Make the bird jump
     jump: function() {
+        if (this.bird.alive == false)
+            return;
+
         // Add a vertical velocity to the bird
         this.bird.body.velocity.y = -200;
 
@@ -84,6 +88,18 @@ var play_state = {
         animation.start();
     },
 
+    hit_pipe: function() {
+        if (this.bird.alive == false)
+            return;
+
+        this.bird.alive = false;
+        this.game.time.events.remove(this.timer);
+
+        this.pipes.forEachAlive(function(p) {
+            p.body.velocity.x = 0;
+        }, this);
+    },
+
     // Restart the game
     restart_game: function() {
         // Remove the timer
@@ -95,7 +111,7 @@ var play_state = {
 
     // Add a pipe on the screen
     add_one_pipe: function(x, y) {
-        console.log('adding one pipe')
+        // console.log('adding one pipe')
         // Get the first dead pipe of our group
         var pipe = this.pipes.getFirstDead();
 
@@ -121,7 +137,7 @@ var play_state = {
         var hole = Math.floor(Math.random()*5)+1;
         var hole_range = hole + 1;
         var hole_range2 = hole + 2;
-        console.log('adding pipes group, hole: ' + hole);
+        // console.log('adding pipes group, hole: ' + hole);
 
         for (var i = 0; i < 5; i++) {
 
@@ -129,7 +145,7 @@ var play_state = {
                 this.add_one_pipe(400, i*60+10);
         }
 
-        this.label_score.setText('' + ++this.score);
+        this.label_score.setText('' + ++app.score);
     },
 
     render: function() {

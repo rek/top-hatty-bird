@@ -31,8 +31,8 @@ require(libsToLoad, function(
     var load_state = {
         preload: function() {
             game.stage.backgroundColor = '#71c5cf';
-            game.load.image('bird', 'img/bird.svg');
-            game.load.image('pipe', 'img/rack_tile.svg');
+            game.load.image('bird', 'img/bird.png');
+            game.load.image('pipe', 'img/rack_tile.png');
             // game.load.audio('jump', 'assets/jump.wav');
         },
         create: function() {

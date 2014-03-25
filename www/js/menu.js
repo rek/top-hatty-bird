@@ -16,7 +16,7 @@ var menu_state = {
         // If the user already played
         if (app.score > 0) {
             // Display its score
-            var score_label = this.game.add.text(x, y+50, "score: " + app.score, style);
+            var score_label = this.game.add.text(x, y+50, "Final score: " + app.score, style);
             score_label.anchor.setTo(0.5, 0.5);
         }
     },
