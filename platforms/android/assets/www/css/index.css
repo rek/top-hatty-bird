@@ -115,7 +115,7 @@ h1 {
 }
 
 #game_div, p {
-width: 400px;
+width: auto;
 margin: auto;
-margin-top: 20px;
+/*margin-top: 20px;*/
 }

@@ -23,10 +23,25 @@ require(libsToLoad, function(
     $
     // ,Phaser
 ){
-    // Initialize Phaser, and creates a 400x490px game
-    game = new Phaser.Game(400, 490, Phaser.AUTO, 'game_div');
 
     app.score = 0;
+    app.dimensions = {
+        maxWidth: 400,
+        maxHeight: 490
+    }
+
+    if (mobile_found) {
+        // $(window).bind('resize', function () {
+        app.width = $('[data-role="page"]').first().width();
+        app.height = $('[data-role="page"]').first().height();
+        // }).trigger('resize');​​​
+    } else {
+        app.width = $(window).width() > app.dimensions.maxWidth ? app.dimensions.maxWidth : $(window).width();
+        app.height = $(window).height() > app.dimensions.maxHeight ? app.dimensions.maxHeight : $(window).height();
+    }
+
+    // Initialize Phaser, and creates a 400x490px game
+    game = new Phaser.Game(app.width, app.height, Phaser.AUTO, 'game_div');
 
     var load_state = {
         preload: function() {
