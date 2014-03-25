@@ -12,8 +12,7 @@ var play_state = {
         app.score = 0;
 
         // Display the bird on the screen
-        // this.bird = this.game.add.sprite(100, 245, 'bird');
-        this.bird = this.game.add.sprite(50, 150, 'bird');
+        this.bird = this.game.add.sprite(70, 150, 'bird');
         this.bird.scale.x = 0.5;
         this.bird.scale.y = 0.5;
 
@@ -44,11 +43,11 @@ var play_state = {
         // make 20
         this.pipes.createMultiple(20, 'pipe');
 
-        this.pipes.scale.x = 0.8;
-        // this.pipes.scale.y = 1.;
+        this.pipes.scale.x = 0.6;
+        // this.pipes.scale.y = 0.8;
 
-        // Timer that calls 'add_row_of_pipes' ever 1.5 seconds
-        this.timer = this.game.time.events.loop(Phaser.Timer.SECOND * 2.5, this.add_row_of_pipes, this);
+        // Timer that calls 'add_row_of_pipes' ever 2.8 seconds
+        this.timer = this.game.time.events.loop(Phaser.Timer.SECOND * 2.8, this.add_row_of_pipes, this);
 
         // Add a score label on the top left of the screen
         var style = { font: '30px Arial', fill: '#ffffff' };
@@ -65,7 +64,6 @@ var play_state = {
             this.bird.angle += 1;
 
         // If the bird overlap any pipes, call 'restart_game'
-        // this.game.physics.overlap(this.bird, this.pipes, this.restart_game, null, this);
         this.game.physics.arcade.collide(this.bird, this.pipes, this.hit_pipe, null, this);
 
     },
@@ -134,15 +132,17 @@ var play_state = {
 
     // Add a row of 6 pipes with a hole somewhere in the middle
     add_row_of_pipes: function() {
-        var hole = Math.floor(Math.random()*5)+1;
-        var hole_range = hole + 1;
-        var hole_range2 = hole + 2;
-        // console.log('adding pipes group, hole: ' + hole);
+        var number_of_pipes = 8;
+        var hole = Math.floor(Math.random() * (number_of_pipes - 2)); //+1; <- bottom holes are hard
+        // thus range is 0 - 6
+        var hole_range = hole + 3;
 
-        for (var i = 0; i < 5; i++) {
+        console.log('adding pipes group, hole: ' + hole);
 
-            if (i != hole && i != hole_range && i != hole_range2)
-                this.add_one_pipe(400, i*60+10);
+        for (var i = 0; i < number_of_pipes; i++) {
+
+            if (i < hole || i > hole_range)
+                this.add_one_pipe(600, i*60);
         }
 
         this.label_score.setText('' + ++app.score);
