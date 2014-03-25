@@ -133,22 +133,27 @@ var play_state = {
     // Add a row of 6 pipes with a hole somewhere in the middle
     add_row_of_pipes: function() {
         var number_of_pipes = 8;
-        var hole = Math.floor(Math.random() * (number_of_pipes - 2)); //+1; <- bottom holes are hard
+        app.hole = Math.floor(Math.random() * (number_of_pipes - 2)); //+1; <- bottom holes are hard
         // thus range is 0 - 6
-        var hole_range = hole + 3;
+        var hole_range = app.hole + 3;
 
-        console.log('adding pipes group, hole: ' + hole);
+        // console.log('adding pipes group, hole: ' + hole);
 
         for (var i = 0; i < number_of_pipes; i++) {
 
-            if (i < hole || i > hole_range)
+            if (i < app.hole || i > hole_range)
                 this.add_one_pipe(600, i*60);
         }
 
-        this.label_score.setText('' + ++app.score);
+        // make the count increment just as we pass through. eg: after 2.8 seconds
+        game.time.events.add(Phaser.Timer.SECOND * 2.8, function(){
+             this.label_score.setText('' + ++app.score)
+        }, this);
+
     },
 
     render: function() {
         // game.debug.text('Score: ' + this.score, 32, 32);
+        game.debug.text('Hole: ' + app.hole, 32, 62);
     }
 };
