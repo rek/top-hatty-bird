@@ -8,5 +8,5 @@ requirejs.config({
           exports : 'jQuery'
         },
     },
-    deps: ['main'] // <-- run our app
+    deps: ['loader'] // <-- run our app
 });
