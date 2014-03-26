@@ -135,6 +135,9 @@ var play_state = {
 
     // Add a row of 6 pipes with a hole somewhere in the middle
     add_row_of_pipes: function() {
+        if (app.score > 2)
+            return this.next_level();
+
         var number_of_pipes = 8;
         app.hole = Math.floor(Math.random() * (number_of_pipes - 2)); //+1; <- bottom holes are hard
         // thus range is 0 - 6
@@ -153,6 +156,17 @@ var play_state = {
              this.label_score.setText('' + ++app.score)
         }, this);
 
+    },
+
+    next_level: function() {
+        console.log('level passed');
+
+        // Remove the timer
+        game.time.events.remove(this.timer);
+
+        game.time.events.add(Phaser.Timer.SECOND * 2.8, function(){
+            this.game.state.start('level2_menu');
+        }, this);
     },
 
     render: function() {

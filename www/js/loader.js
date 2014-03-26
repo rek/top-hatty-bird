@@ -4,6 +4,8 @@ var libsToLoad = [
     'jquery',
     'menu',
     'play',
+    'levels/level2',
+    'levels/level2_menu',
     'phaser'
 ];
 
@@ -77,6 +79,8 @@ require(libsToLoad, function(
     game.state.add('load', load_state);
     game.state.add('menu', menu_state);
     game.state.add('play', play_state);
+    game.state.add('level2_menu', level2_menu);
+    game.state.add('level2', level2_state);
 
     if (mobile_found) {
         document.addEventListener('deviceready', function() {
