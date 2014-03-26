@@ -46,6 +46,9 @@ var play_state = {
         this.pipes.scale.x = 0.6;
         // this.pipes.scale.y = 0.8;
 
+        //call right up
+        this.add_row_of_pipes();
+
         // Timer that calls 'add_row_of_pipes' ever 2.8 seconds
         this.timer = this.game.time.events.loop(Phaser.Timer.SECOND * 2.8, this.add_row_of_pipes, this);
 
