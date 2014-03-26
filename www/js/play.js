@@ -31,7 +31,7 @@ var play_state = {
         // space_key.onDown.add(this.jump, this);
 
         var self = this;
-        this.game.input.onTap.add(function(e){
+        this.game.input.onDown.add(function(e){
             // console.log('tapped');
             self.jump();
         }, this);
@@ -154,6 +154,6 @@ var play_state = {
 
     render: function() {
         // game.debug.text('Score: ' + this.score, 32, 32);
-        game.debug.text('Hole: ' + app.hole, 32, 62);
+        // game.debug.text('Hole: ' + app.hole, 32, 62);
     }
 };
