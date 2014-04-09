@@ -6,6 +6,7 @@ var libsToLoad = [
     'play',
     'levels/level2',
     'levels/level2_menu',
+    'Bird',
     'phaser'
 ];
 
